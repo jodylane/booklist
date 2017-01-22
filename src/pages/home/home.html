@@ -1,0 +1,59 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+            Book List
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="addBook()">
+                <ion-icon name="add"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding class="bg">
+    <h1>List of Books</h1>
+
+    <div padding>
+        <ion-segment [(ngModel)]="avail">
+            <ion-segment-button value="available">Available</ion-segment-button>
+            <ion-segment-button value="unavailable">Un-Available</ion-segment-button>
+        </ion-segment>
+    </div>
+    <div [ngSwitch]="avail">
+        <ion-list *ngSwitchCase="'available'">
+            <ion-item-sliding *ngFor="let book of books | async" class="ion">
+                <ion-item *ngIf="book.checked" (click)="viewBook(book)" >
+                    <ion-thumbnail item-left><img src="{{book.cover}}"/></ion-thumbnail>
+                    <p>{{book.title}}</p>
+
+                    <p>{{book.author}}</p>
+                </ion-item>
+                <ion-item-options>
+                    <button ion-button icon-only (click)="editBook(book)">
+                        <ion-icon name="clipboard"></ion-icon>
+                    </button>
+                    <button ion-button icon-only color="danger" (click)="removeBook(book)">
+                        <ion-icon name="trash"></ion-icon>
+                    </button>
+                </ion-item-options>
+            </ion-item-sliding>
+        </ion-list>
+    </div>
+    <div [ngSwitch]="avail">
+        <ion-list *ngSwitchCase="'unavailable'">
+            <div *ngFor="let book of books | async">
+                <ion-item *ngIf="!book.checked">
+                <ion-thumbnail item-left><img src="{{book.cover}}"/></ion-thumbnail>
+                <p>{{book.title}}</p>
+                <p>{{book.author}}</p>
+                </ion-item>
+            </div>
+        </ion-list>
+    </div>
+
+
+</ion-content>
